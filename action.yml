@@ -1,6 +1,6 @@
-name: 'setup-msbuild'
-description: 'Helps set up MSBuild into PATH for later usage.'
-author: 'Microsoft'
+name: 'setup-sqlpackage'
+description: 'Helps set up SqlPackage into PATH for later usage.'
+author: 'Microsoft, Corey Webber'
 branding:
   color: purple
   icon: terminal
@@ -8,12 +8,12 @@ inputs:
   vswhere-path:
     required: false
     description: 'Folder location of where vswhere.exe is located if a self-hosted agent'
-  vs-version:
-    description: 'Version of Visual Studio to search; defaults to latest if not specified'
+  sql-version:
+    description: 'Version of SQL Server to search; defaults to latest if not specified'
     required: false
 outputs:
-  msbuildPath:
-    description: 'The resulting location of msbuild for your inputs'
+  sqlpackagePath:
+    description: 'The resulting location of sqlpackage for your inputs'
 
 runs:
   using: 'node12'

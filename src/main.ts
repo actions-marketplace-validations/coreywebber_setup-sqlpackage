@@ -6,14 +6,17 @@ import * as io from '@actions/io'
 import {ExecOptions} from '@actions/exec/lib/interfaces'
 
 const IS_WINDOWS = process.platform === 'win32'
-const VS_VERSION = core.getInput('vs-version') || 'latest'
+const SQL_VERSION = core.getInput('sql-version') || 'latest'
 const VSWHERE_PATH = core.getInput('vswhere-path')
 
-// if a specific version of VS is requested
-let VSWHERE_EXEC = '-products * -requires Microsoft.Component.MSBuild -property installationPath -latest '
-if (VS_VERSION !== 'latest') {
-  VSWHERE_EXEC += `-version "${VS_VERSION}" `
+// if a specific version of SqlServer is requested
+let SQL_VERSION_PATH = ''
+if (SQL_VERSION === 'latest') {
+  SQL_VERSION_PATH += '15' //2019
+} else {
+  SQL_VERSION_PATH = SQL_VERSION
 }
+let VSWHERE_EXEC = '-find "**\\SQLDB\\**\\' + SQL_VERSION_PATH + '*\\SqlPackage.exe"'
 
 core.debug(`Execution arguments: ${VSWHERE_EXEC}`)
 
@@ -50,7 +53,7 @@ async function run(): Promise<void> {
 
     if (!fs.existsSync(vswhereToolExe)) {
       core.setFailed(
-        'setup-msbuild requires the path to where vswhere.exe exists'
+        'setup-sqlpackage requires the path to where vswhere.exe exists'
       )
 
       return
@@ -65,17 +68,11 @@ async function run(): Promise<void> {
         const installationPath = data.toString().trim()
         core.debug(`Found installation path: ${installationPath}`)
 
-        let toolPath = path.join(
-          installationPath,
-          'MSBuild\\Current\\Bin\\MSBuild.exe'
-        )
+        let toolPath = installationPath
 
         core.debug(`Checking for path: ${toolPath}`)
         if (!fs.existsSync(toolPath)) {
-          toolPath = path.join(
-            installationPath,
-            'MSBuild\\15.0\\Bin\\MSBuild.exe'
-          )
+          toolPath = installationPath
 
           core.debug(`Checking for path: ${toolPath}`)
           if (!fs.existsSync(toolPath)) {
@@ -91,7 +88,7 @@ async function run(): Promise<void> {
     await exec.exec(`"${vswhereToolExe}" ${VSWHERE_EXEC}`, [], options)
 
     if (!foundToolPath) {
-      core.setFailed('Unable to find MSBuild.')
+      core.setFailed('Unable to find SqlPackage.')
       return
     }
 
@@ -99,7 +96,7 @@ async function run(): Promise<void> {
     const toolFolderPath = path.dirname(foundToolPath)
 
     // set the outputs for the action to the folder path of msbuild
-    core.setOutput('msbuildPath', toolFolderPath)
+    core.setOutput('sqlpackagePath', toolFolderPath)
 
     // add tool path to PATH
     core.addPath(toolFolderPath)

@@ -1,21 +1,21 @@
-# microsoft/setup-msbuild
-You know how handy that 'Visual Studio Developer Command Prompt' is on your local machine?  And how it adds several things to `PATH` to allow you to just issue commands like `msbuild` or otherwise?  Use this action to setup similar flexibility in your Windows-based GitHub Actions runners.  This will let you discover where those tool paths are and automatically add them to the `PATH` environment variables for you so future steps in your Actions workflow can just initiate commands without knowing the full path.
+# coreywebber/setup-sqlpackage
+You know how handy that 'Visual Studio Developer Command Prompt' is on your local machine?  And how it adds several things to `PATH` to allow you to just issue commands like `sqlpackage` or otherwise?  Use this action to setup similar flexibility in your Windows-based GitHub Actions runners.  This will let you discover where those tool paths are and automatically add them to the `PATH` environment variables for you so future steps in your Actions workflow can just initiate commands without knowing the full path.
 
 ## Usage
 
 ```yml
-- name: Add msbuild to PATH
-  uses: microsoft/setup-msbuild@v1.0.2
+- name: Add sqlpackage to PATH
+  uses: coreywebber/setup-sqlpackage@v1.0.2
 ```
 
-## Specifying specific versions of Visual Studio
-You may have a situation where your Actions runner has multiple versions of Visual Studio and you need to find a specific version of the tool.  Simply add the `vs-version` input to specify the range of versions to find.  If looking for a specific version, specify the minimum and maximum versions as shown in the example below, which will look for just 16.4.
+## Specifying specific versions of Sql Server
+You may have a situation where your Actions runner has multiple versions of Visual Studio and you need to find a specific version of the tool.  Simply add the `sql-version` input to specify the range of versions to find.  If looking for a specific version, specify the minimum and maximum versions as shown in the example below, which will look for just 14.
 
 ```yml
-- name: Add msbuild to PATH
-  uses: microsoft/setup-msbuild@v1.0.2
+- name: Add sqlpackage to PATH
+  uses: coreywebber/setup-sqlpackage@v1.0.2
   with:
-    vs-version: '[16.4,16.5)'
+    sql-version: 14
 ```
 
 The syntax is the same used for Visual Studio extensions, where square brackets like "[" mean inclusive, and parenthesis like "(" mean exclusive. A comma is always required, but eliding the minimum version looks for all older versions and eliding the maximum version looks for all newer versions. See the [vswhere wiki](https://github.com/microsoft/vswhere/wiki) for more details.
@@ -24,14 +24,15 @@ The syntax is the same used for Visual Studio extensions, where square brackets 
 This makes use of the vswhere tool which is a tool delivered by Microsoft to help in identifying Visual Studio installs and various components.  This tool is installed on the hosted Windows runners for GitHub Actions.  If you are using a self-hosted runner, you either need to make sure vswhere.exe is in your agent's PATH or specify a full path to the location using:
 
 ```yml
-- name: Add msbuild to PATH
-  uses: microsoft/setup-msbuild@v1.0.2
+- name: Add sqlpackage to PATH
+  uses: coreywebber/setup-sqlpackage@v1.0.2
   with:
+    sql-version: 14
     vswhere-path: 'C:\path\to\your\tools\'
 ```
 
 ## Notes on arguments
-While the Action enables you to specify a `vswhere` path as well as a `vs-version`, these are more advanced options and when using GitHub-hosted runners you should not need these and is recommended you don't specify them.  Using these require you to fully understand the runner environment, updates to the tools on the runner, and can cause failures if you are out of sync.  For GitHub-hosted runners, omitting these arguments is the preferred usage.
+While the Action enables you to specify a `vswhere` path as well as a `sql-version`, these are more advanced options and when using GitHub-hosted runners you should not need these and is recommended you don't specify them.  Using these require you to fully understand the runner environment, updates to the tools on the runner, and can cause failures if you are out of sync.  For GitHub-hosted runners, omitting these arguments is the preferred usage.
 
 ## Building this repo
 As with most GitHub Actions, this requires NodeJS development tools.  After installing NodeJS, you can build this by executing:
