@@ -1,6 +1,6 @@
 {
     "name": "setup-sqlpackage",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "private": true,
     "description": "Helps set up specific SqlPackage tool into PATH for later usage.",
     "main": "lib/main.js",
