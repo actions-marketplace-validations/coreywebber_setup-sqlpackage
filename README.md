@@ -5,7 +5,7 @@ You know how handy that 'Visual Studio Developer Command Prompt' is on your loca
 
 ```yml
 - name: Add sqlpackage to PATH
-  uses: coreywebber/setup-sqlpackage@v1.0.2
+  uses: coreywebber/setup-sqlpackage@v1.0.3
 ```
 
 ## Specifying specific versions of Sql Server
@@ -13,7 +13,7 @@ You may have a situation where your Actions runner has multiple versions of Visu
 
 ```yml
 - name: Add sqlpackage to PATH
-  uses: coreywebber/setup-sqlpackage@v1.0.2
+  uses: coreywebber/setup-sqlpackage@v1.0.3
   with:
     sql-version: 14
 ```
@@ -25,7 +25,7 @@ This makes use of the vswhere tool which is a tool delivered by Microsoft to hel
 
 ```yml
 - name: Add sqlpackage to PATH
-  uses: coreywebber/setup-sqlpackage@v1.0.2
+  uses: coreywebber/setup-sqlpackage@v1.0.3
   with:
     sql-version: 14
     vswhere-path: 'C:\path\to\your\tools\'

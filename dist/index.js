@@ -1055,7 +1055,7 @@ function run() {
         try {
             // exit if non Windows runner
             if (IS_WINDOWS === false) {
-                core.setFailed('setup-msbuild can only be run on Windows runners');
+                core.setFailed('setup-sqlpackage can only be run on Windows runners');
                 return;
             }
             // check to see if we are using a specific path for vswhere
