@@ -1105,7 +1105,6 @@ function run() {
             yield exec.exec(`"${vswhereToolExe}" ${VSWHERE_EXEC}`, [], options);
             if (!foundToolPath) {
                 let MISC_PATHS = '';
-                core.setFailed('Unable to find SqlPackage using vswhere, attempting to check default buildtool locations');
                 // build tools installs
                 MISC_PATHS = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\' + SQL_VERSION_PATH + '0\\sqlpackage.exe';
                 if (fs.existsSync(MISC_PATHS)) {
@@ -1117,6 +1116,7 @@ function run() {
                     foundToolPath = MISC_PATHS;
                 }
                 if (!foundToolPath) {
+                    core.setFailed('Unable to find SqlPackage using vswhere, attempting to check default buildtool locations');
                     return;
                 }
             }

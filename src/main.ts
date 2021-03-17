@@ -89,8 +89,6 @@ async function run(): Promise<void> {
 
     if (!foundToolPath) {
       let MISC_PATHS = ''
-      core.setFailed('Unable to find SqlPackage using vswhere, attempting to check default buildtool locations')
-      
       // build tools installs
       MISC_PATHS = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\' + SQL_VERSION_PATH +'0\\sqlpackage.exe'
       if(fs.existsSync(MISC_PATHS)) { 
@@ -102,7 +100,10 @@ async function run(): Promise<void> {
         foundToolPath = MISC_PATHS 
       }
 
-      if (!foundToolPath) { return }
+      if (!foundToolPath) { 
+        core.setFailed('Unable to find SqlPackage using vswhere, attempting to check default buildtool locations')
+        return 
+      }
     }
 
     // extract the folder location for the tool
