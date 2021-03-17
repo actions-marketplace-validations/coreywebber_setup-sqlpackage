@@ -53,7 +53,7 @@ async function run(): Promise<void> {
 
     if (!fs.existsSync(vswhereToolExe)) {
       core.setFailed(
-        'setup-sqlpackage requires the path to where vswhere.exe exists'
+        'setup-sqlpackage cannot find the path to where vswhere.exe exists'
       )
 
       return
@@ -88,8 +88,21 @@ async function run(): Promise<void> {
     await exec.exec(`"${vswhereToolExe}" ${VSWHERE_EXEC}`, [], options)
 
     if (!foundToolPath) {
-      core.setFailed('Unable to find SqlPackage.')
-      return
+      let MISC_PATHS = ''
+      core.setFailed('Unable to find SqlPackage using vswhere, attempting to check default buildtool locations')
+      
+      // build tools installs
+      MISC_PATHS = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\' + SQL_VERSION_PATH +'0\\sqlpackage.exe'
+      if(fs.existsSync(MISC_PATHS)) { 
+        foundToolPath = MISC_PATHS 
+      }
+      // old build tools
+      MISC_PATHS = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\BuildTools\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\' + SQL_VERSION_PATH +'0\\sqlpackage.exe'
+      if(fs.existsSync(MISC_PATHS)) { 
+        foundToolPath = MISC_PATHS 
+      }
+
+      if (!foundToolPath) { return }
     }
 
     // extract the folder location for the tool
