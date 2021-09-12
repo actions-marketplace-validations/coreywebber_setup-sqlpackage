@@ -89,8 +89,14 @@ async function run(): Promise<void> {
 
     if (!foundToolPath) {
       let MISC_PATHS = ''
+
       // build tools installs
       MISC_PATHS = 'C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\BuildTools\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\' + SQL_VERSION_PATH +'0\\sqlpackage.exe'
+      if(fs.existsSync(MISC_PATHS)) { 
+        foundToolPath = MISC_PATHS 
+      }
+      // VS 22 preview tools
+      MISC_PATHS = 'C:\\Program Files\\Microsoft Visual Studio\\2022\\Preview\\Common7\\IDE\\Extensions\\Microsoft\\SQLDB\\DAC\\sqlpackage.exe'
       if(fs.existsSync(MISC_PATHS)) { 
         foundToolPath = MISC_PATHS 
       }
