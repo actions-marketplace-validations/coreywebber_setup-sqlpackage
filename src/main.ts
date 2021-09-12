@@ -8,6 +8,7 @@ import {ExecOptions} from '@actions/exec/lib/interfaces'
 const IS_WINDOWS = process.platform === 'win32'
 const SQL_VERSION = core.getInput('sql-version') || 'latest'
 const VSWHERE_PATH = core.getInput('vswhere-path')
+const ALLOW_PRERELEASE = core.getInput('vs-prerelease') || 'false'
 
 // if a specific version of SqlServer is requested
 let SQL_VERSION_PATH = ''
@@ -16,8 +17,11 @@ if (SQL_VERSION === 'latest') {
 } else {
   SQL_VERSION_PATH = SQL_VERSION
 }
-let VSWHERE_EXEC = '-find "**\\SQLDB\\**\\' + SQL_VERSION_PATH + '*\\SqlPackage.exe"'
+let VSWHERE_EXEC = '-find "**\\SQLDB\\**\\' + SQL_VERSION_PATH + '*\\SqlPackage.exe" '
 
+if (ALLOW_PRERELEASE === 'true') {
+  VSWHERE_EXEC += ' -prerelease '
+}
 core.debug(`Execution arguments: ${VSWHERE_EXEC}`)
 
 async function run(): Promise<void> {
